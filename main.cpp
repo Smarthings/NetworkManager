@@ -8,6 +8,8 @@
 #include <QList>
 #include <QDebug>
 #include <QProcess>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 int main(int argc, char *argv[])
 {
@@ -21,13 +23,42 @@ int main(int argc, char *argv[])
     if (!scan_wifi.waitForFinished())
         return -1;
 
-    QByteArray result_scan = scan_wifi.readAll();
+    QRegularExpression reg_SIGNAL("(signal: .*)");
+    QRegularExpression reg_SSID("(SSID: .*)");
+    QRegularExpression reg_AUTHTYPE("(Authentication suites: .*)");
+    QRegularExpression reg_FINAL("BSS .*\)$");
 
+    QList<QStringList> list;
+    QStringList str_list;
 
-//    QQmlApplicationEngine engine;
-//    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
-//    if (engine.rootObjects().isEmpty())
-//        return -1;
+    while (!scan_wifi.atEnd()) {
+        QString line = scan_wifi.readLine();
 
-    return app.exec();
+        QRegularExpressionMatch match_SIGNAL = reg_SIGNAL.match(line);
+        if (match_SIGNAL.hasMatch())
+            str_list.append(match_SIGNAL.captured());
+
+        QRegularExpressionMatch match_SSID = reg_SSID.match(line);
+        if (match_SSID.hasMatch())
+            str_list.append(match_SSID.captured());
+
+        QRegularExpressionMatch match_AUTHTYPE = reg_AUTHTYPE.match(line);
+        if (match_AUTHTYPE.hasMatch()) {
+            str_list.append(match_AUTHTYPE.captured());
+            list.append(str_list);
+            str_list.clear();
+        }
+    }
+
+    for (auto &it : list) {
+        qDebug() << it;
+    }
+
+    /*QQmlApplicationEngine engine;
+    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;*/
+
+    return 0;
+    //return app.exec();
 }
