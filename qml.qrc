@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>ScrollablePage.qml</file>
+        <file>HomePage.qml</file>
+        <file>fonts/MaterialIcons.ttf</file>
     </qresource>
 </RCC>
