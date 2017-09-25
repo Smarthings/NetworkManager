@@ -51,7 +51,7 @@ ScrollablePage {
                 Rectangle {
                     width: parent.width
                     height: 1
-                    color: "#ddd"
+                    color: object.line
                 }
 
                 Item {
@@ -125,7 +125,7 @@ ScrollablePage {
                             Rectangle {
                                 width: parent.width
                                 height: 1
-                                color: "#ddd"
+                                color: object.line
                                 anchors.bottom: parent.bottom
                             }
                         }

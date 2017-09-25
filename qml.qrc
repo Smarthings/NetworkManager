@@ -5,5 +5,6 @@
         <file>ScrollablePage.qml</file>
         <file>HomePage.qml</file>
         <file>fonts/MaterialIcons.ttf</file>
+        <file>DialogTheme.qml</file>
     </qresource>
 </RCC>
