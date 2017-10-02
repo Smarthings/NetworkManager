@@ -4,7 +4,9 @@ NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
     timer(new QTimer)
 {
     this->getInterface();
-    this->scanWireless();
+    this->startWlan();
+    this->getCurrentConnection();
+//    this->scanWireless();
 
     connect(&process, SIGNAL(finished(int)), this, SLOT(parseScanWireless(int)));
     connect(timer, &QTimer::timeout, this, &NetworkWireless::scanWireless, Qt::UniqueConnection);
@@ -17,6 +19,37 @@ void NetworkWireless::getInterface()
     for (auto &interface : interfaces) {
         if (QString(interface.name()).indexOf("w") >= 0) {
             ifaces.append(interface.name());
+        }
+    }
+}
+
+void NetworkWireless::startWlan()
+{
+    QString command = QString("/bin/sh -c \"ifdown %1; ifup %2\" ").arg(ifaces.at(0)).arg(ifaces.at(0));
+    QProcess _startWlan;
+    _startWlan.start(command);
+
+    if (_startWlan.waitForFinished())
+        qDebug() << command << "Error" << _startWlan.errorString();
+    else
+        qDebug() << _startWlan.readAll();
+    _startWlan.close();
+}
+
+void NetworkWireless::getCurrentConnection()
+{
+    QString command = QString("iwconfig %1").arg(ifaces.at(0));
+    QProcess _getCurrentConnection;
+    _getCurrentConnection.start(command);
+
+    if (!_getCurrentConnection.waitForFinished())
+        qDebug() << command << "Error" << _getCurrentConnection.errorString();
+    else {
+        QString result = _getCurrentConnection.readAll();
+        QRegularExpression reg_SSID("(ESSID:.*)");
+        QRegularExpressionMatch match_SSID = reg_SSID.match(result);
+        if (match_SSID.hasMatch()) {
+            QStringList ESSID = match_SSID.captured().split(":");
         }
     }
 }
@@ -86,9 +119,42 @@ void NetworkWireless::parseScanWireless(int status)
         }
         if (!list_wifi.isEmpty())
             Q_EMIT listWifiChanged();
+        process.close();
     }
     busy = false;
     Q_EMIT searchChanged();
+}
+
+void NetworkWireless::setWifi(QJsonObject wifi)
+{
+    QStringList data;
+    data << wifi.value("ESSID").toString() << wifi.value("password").toString();
+
+    QString command = QString("wpa_passphrase %1 %2").arg(data.at(0)).arg(data.at(1));
+    QProcess wifiWrite;
+    wifiWrite.start(command);
+
+    if (!wifiWrite.waitForFinished())
+        qDebug() << "Error" << wifiWrite.errorString();
+    else {
+        QString contentWpaSupplicant = wifiWrite.readAll();
+        wifiWrite.close();
+        QFile wpa_supplicant("/etc/wpa_supplicant.conf");
+        if (!wpa_supplicant.open(QIODevice::WriteOnly))
+            qDebug() << "Error" << wpa_supplicant.errorString();
+        if (!wpa_supplicant.write(contentWpaSupplicant.toUtf8(), contentWpaSupplicant.length()))
+            qDebug() << "Error" << wpa_supplicant.errorString();
+        wpa_supplicant.close();
+        if (!wpa_supplicant.isOpen()) {
+            command = QString("/bin/sh -c \"ifdown %1; ifup %2\" ").arg(ifaces.at(0)).arg(ifaces.at(0));
+            wifiWrite.start(command);
+
+            if (!wifiWrite.waitForFinished())
+                qDebug() << command << "Error" << wifiWrite.errorString();
+            qDebug() << command << wifiWrite.readAll();
+            wifiWrite.close();
+        }
+    }
 }
 
 NetworkWireless::~NetworkWireless()

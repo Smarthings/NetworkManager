@@ -101,6 +101,13 @@ ApplicationWindow {
         }
     }
 
+    Shortcut {
+        sequence: "Alt+F4"
+        onActivated: {
+            window.close();
+        }
+    }
+
     StackView {
         id: stackview
         anchors.fill: parent

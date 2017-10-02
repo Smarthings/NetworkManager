@@ -128,10 +128,18 @@ ScrollablePage {
                                 color: object.line
                                 anchors.bottom: parent.bottom
                             }
+
+                            onClicked: {
+                                dialogConnect.dataWifi = wireless.listWifi[index];
+                                dialogConnect.open();
+                            }
                         }
                     }
                 }
             }
+        }
+        DialogConnect {
+            id: dialogConnect
         }
     }
 }
