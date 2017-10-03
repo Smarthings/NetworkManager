@@ -18,6 +18,7 @@ class NetworkWireless : public QObject
     Q_PROPERTY(QList<QVariant> listWifi READ listWifi NOTIFY listWifiChanged)
     Q_PROPERTY(bool search READ search NOTIFY searchChanged)
     Q_PROPERTY(QJsonObject connectWifi READ connectWifi WRITE setWifi NOTIFY connectWifiChanged)
+    Q_PROPERTY(QString wifi_connected READ wifi_connected NOTIFY wifi_connectedChanged)
 
 public:
     explicit NetworkWireless(QObject *parent = nullptr);
@@ -27,6 +28,7 @@ Q_SIGNALS:
     void listWifiChanged();
     void connectWifiChanged();
     void searchChanged();
+    void wifi_connectedChanged();
 
 private:
     void getInterface();
@@ -54,6 +56,9 @@ protected:
     bool search() { return busy; }
 
     QTimer *timer;
+
+    QString wifi_connected() { return v_wifi_connected; }
+    QString v_wifi_connected = "off/any";
 };
 
 #endif // NETWORKWIRELESS_H

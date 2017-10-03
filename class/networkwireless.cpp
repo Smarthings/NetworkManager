@@ -6,7 +6,7 @@ NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
     this->getInterface();
     this->startWlan();
     this->getCurrentConnection();
-//    this->scanWireless();
+    this->scanWireless();
 
     connect(&process, SIGNAL(finished(int)), this, SLOT(parseScanWireless(int)));
     connect(timer, &QTimer::timeout, this, &NetworkWireless::scanWireless, Qt::UniqueConnection);
@@ -49,7 +49,8 @@ void NetworkWireless::getCurrentConnection()
         QRegularExpression reg_SSID("(ESSID:.*)");
         QRegularExpressionMatch match_SSID = reg_SSID.match(result);
         if (match_SSID.hasMatch()) {
-            QStringList ESSID = match_SSID.captured().split(":");
+            v_wifi_connected = QString(match_SSID.captured()).replace("\"", "").replace(" ", "").split(":").at(1);
+            Q_EMIT wifi_connectedChanged();
         }
     }
 }
@@ -91,6 +92,8 @@ void NetworkWireless::parseScanWireless(int status)
             if (match_SSID.hasMatch()) {
                 QStringList split = match_SSID.captured().replace("\"", "").split(":");
                 object.insert(split.at(0), split.at(1));
+                if (split.at(1) == v_wifi_connected)
+                    object.insert("connect", true);
             }
 
             QRegularExpressionMatch match_CHANNEL = reg_CHANNEL.match(line);
@@ -154,6 +157,7 @@ void NetworkWireless::setWifi(QJsonObject wifi)
             qDebug() << command << wifiWrite.readAll();
             wifiWrite.close();
         }
+        this->getCurrentConnection();
     }
 }
 

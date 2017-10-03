@@ -16,13 +16,12 @@ ApplicationWindow {
 
     Material.accent: Material.color(Material.DeepOrange)
     Material.theme: settings.theme
-    Material.background: settings.theme == 0? "#f0f0f0" : "#222222"
-    Material.foreground: settings.theme == 0? "#222222" : "#f0f0f0"
+    Material.background: settings.theme == 0? "#f0f0f0" : "#111111"
+    Material.foreground: settings.theme == 0? "#111111" : "#f0f0f0"
 
     QtObject {
         id: object
 
-        property bool connect: false
         property color line: settings.theme == 0? "#ddd" : "#2f2f2f"
     }
 
@@ -64,13 +63,13 @@ ApplicationWindow {
 
                     Text {
                         width: 30
-                        text: object.connect? "\uE1BA" : "\uE8A9"
+                        text: wireless.wifi_connected === "off/any"? "\uE8A9" : "\uE1BA"
                         font.family: material_icon.name
                         color: "#999"
                     }
 
                     Text {
-                        text: object.connect? qsTr("Conectado à ") : qsTr("Sem conexão")
+                        text: wireless.wifi_connected === "off/any"? qsTr("Sem conexão") : qsTr("Conectado à %1").arg(wireless.wifi_connected)
                         Layout.fillWidth: true
                         color: "#999"
                     }

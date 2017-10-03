@@ -72,6 +72,7 @@ ScrollablePage {
                 Rectangle {
                     width: parent.width
                     Layout.fillHeight: true
+                    Layout.topMargin: 10
                     color: "transparent"
 
                     ListView {
@@ -83,6 +84,7 @@ ScrollablePage {
                         delegate: ItemDelegate {
                             width: parent.width
                             height: 50
+                            highlighted: (modelData.connect)? true : false
 
                             Column {
                                 anchors.fill: parent
@@ -122,6 +124,7 @@ ScrollablePage {
                                     }
                                 }
                             }
+
                             Rectangle {
                                 width: parent.width
                                 height: 1
@@ -133,6 +136,13 @@ ScrollablePage {
                                 dialogConnect.dataWifi = wireless.listWifi[index];
                                 dialogConnect.open();
                             }
+
+                            onPressAndHold: {
+                                if (modelData.ESSID === wireless.wifi_connected) {
+                                    dialogDisconnect.name = modelData.ESSID;
+                                    dialogDisconnect.open();
+                                }
+                            }
                         }
                     }
                 }
@@ -140,6 +150,10 @@ ScrollablePage {
         }
         DialogConnect {
             id: dialogConnect
+        }
+
+        DialogDisconnect {
+            id: dialogDisconnect
         }
     }
 }
