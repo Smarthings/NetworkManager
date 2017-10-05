@@ -6,6 +6,7 @@ NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
     this->getInterface();
     this->startWlan();
     this->getCurrentConnection();
+    this->getSqlSavedWireless();
     this->scanWireless();
 
     connect(&process, SIGNAL(finished(int)), this, SLOT(parseScanWireless(int)));
@@ -140,9 +141,29 @@ void NetworkWireless::setWifi(QJsonObject wifi)
     if (!wifiWrite.waitForFinished())
         qDebug() << "Error" << wifiWrite.errorString();
     else {
-        QString contentWpaSupplicant = wifiWrite.readAll();
+        QString contentWpaSupplicant;
+
+        QRegularExpression sharpPsk("(#psk=.*)");
+        QRegularExpression psk("(psk=.*)");
+
+        while (!wifiWrite.atEnd()) {
+            QString line = wifiWrite.readLine();
+
+            QRegularExpressionMatch match_sharpPsk = sharpPsk.match(line);
+            if (match_sharpPsk.hasMatch()) {
+                if (data.at(1) == QString(match_sharpPsk.captured()).replace("\"", "").split("=")[1])
+                    continue;
+            }
+
+            QRegularExpressionMatch match_psk = psk.match(line);
+            if (match_psk.hasMatch()) {
+                QString pass_crypt = QString(match_psk.captured()).split("=")[1];
+                db->insertWireless(data.at(0), pass_crypt);
+            }
+            contentWpaSupplicant.append(line);
+        }
         wifiWrite.close();
-        QFile wpa_supplicant("/etc/wpa_supplicant.conf");
+        QFile wpa_supplicant("/tmp/wpa_supplicant.conf");
         if (!wpa_supplicant.open(QIODevice::WriteOnly))
             qDebug() << "Error" << wpa_supplicant.errorString();
         if (!wpa_supplicant.write(contentWpaSupplicant.toUtf8(), contentWpaSupplicant.length()))
@@ -159,6 +180,11 @@ void NetworkWireless::setWifi(QJsonObject wifi)
         }
         this->getCurrentConnection();
     }
+}
+
+void NetworkWireless::getSqlSavedWireless()
+{
+    db->selectWirelress();
 }
 
 NetworkWireless::~NetworkWireless()
