@@ -113,8 +113,20 @@ ApplicationWindow {
         initialItem: HomePage {}
     }
 
+    ToolTip {
+        id: message
+        timeout: 3000
+        topMargin: parent.height
+        z: 3
+    }
+
     NetworkWireless {
         id: wireless
+
+        onErrorChanged: {
+            message.text = qsTr(error);
+            message.visible = true;
+        }
     }
 
     DialogTheme {

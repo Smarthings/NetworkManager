@@ -93,9 +93,11 @@ void NetworkWireless::parseScanWireless(int status)
             if (match_SSID.hasMatch()) {
                 QStringList split = match_SSID.captured().replace("\"", "").split(":");
                 object.insert(split.at(0), split.at(1));
-                QString savedPass = this->findSavedWireless(split.at(1));
-                if (savedPass.length() > 0)
-                    object.insert("saved", savedPass);
+                QStringList savedPass = this->findSavedWireless(split.at(1));
+                if (savedPass.count() > 0) {
+                    object.insert("id", savedPass.at(0));
+                    object.insert("saved", savedPass.at(1));
+                }
                 if (split.at(1) == v_wifi_connected)
                     object.insert("connect", true);
             }
@@ -137,7 +139,7 @@ void NetworkWireless::setWifi(QJsonObject wifi)
     QStringList data;
     data << wifi.value("ESSID").toString() << wifi.value("password").toString();
 
-    QString command = QString("wpa_passphrase %1 \"%2\"").arg(data.at(0)).arg(data.at(1));
+    QString command = QString("wpa_passphrase \"%1\" \"%2\"").arg(data.at(0)).arg(data.at(1));
     QProcess wifiWrite;
     wifiWrite.start(command);
 
@@ -146,11 +148,19 @@ void NetworkWireless::setWifi(QJsonObject wifi)
     else {
         QString contentWpaSupplicant;
 
+        QRegularExpression errorMsg("(Passphrase must be.*)");
         QRegularExpression sharpPsk("(#psk=.*)");
         QRegularExpression psk("(psk=.*)");
 
         while (!wifiWrite.atEnd()) {
             QString line = wifiWrite.readLine();
+
+            QRegularExpressionMatch match_errorMsg = errorMsg.match(line);
+            if (match_errorMsg.hasMatch()) {
+                v_error = match_errorMsg.captured();
+                Q_EMIT errorChanged();
+                return;
+            }
 
             QRegularExpressionMatch match_sharpPsk = sharpPsk.match(line);
             if (match_sharpPsk.hasMatch()) {
@@ -192,13 +202,16 @@ void NetworkWireless::getSqlSavedWireless()
     v_wifi_saved = db->selectWirelress();
 }
 
-QString NetworkWireless::findSavedWireless(QString name)
+QStringList NetworkWireless::findSavedWireless(QString name)
 {
+    QStringList result;
     for (auto &list : v_wifi_saved) {
-        if (list.at(1) == name)
-            return list.at(2);
+        if (list.at(1) == name) {
+            result << list.at(0) << list.at(2);
+            return result;
+        }
     }
-    return "";
+    return result;
 }
 
 NetworkWireless::~NetworkWireless()

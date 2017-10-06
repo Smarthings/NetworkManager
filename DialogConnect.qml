@@ -69,7 +69,7 @@ Dialog {
 
             onClicked: {
                 if (dataWifi['saved']) {
-                    console.log("Connect: ", dataWifi);
+                    console.log("Connect: ", dataWifi['id']);
                 } else {
                     dataWifi['password'] = password.text;
                     wireless.setWifi(dataWifi);

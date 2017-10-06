@@ -138,7 +138,7 @@ ScrollablePage {
                             }
 
                             onPressAndHold: {
-                                if (modelData.ESSID === wireless.wifi_connected) {
+                                if (modelData.ESSID === wireless.wifi_connected || modelData.saved) {
                                     dialogDisconnect.name = modelData.ESSID;
                                     dialogDisconnect.open();
                                 }

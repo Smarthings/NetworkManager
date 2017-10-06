@@ -23,6 +23,7 @@ class NetworkWireless : public QObject
     Q_PROPERTY(bool search READ search NOTIFY searchChanged)
     Q_PROPERTY(QJsonObject connectWifi READ connectWifi WRITE setWifi NOTIFY connectWifiChanged)
     Q_PROPERTY(QString wifi_connected READ wifi_connected NOTIFY wifi_connectedChanged)
+    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
 
 public:
     explicit NetworkWireless(QObject *parent = nullptr);
@@ -33,6 +34,7 @@ Q_SIGNALS:
     void connectWifiChanged();
     void searchChanged();
     void wifi_connectedChanged();
+    void errorChanged();
 
 private:
     void getInterface();
@@ -46,7 +48,7 @@ protected slots:
     void scanWireless();
     void parseScanWireless(int status);
     void getSqlSavedWireless();
-    QString findSavedWireless(QString name);
+    QStringList findSavedWireless(QString name);
 
 protected:
     QStringList ifaces;
@@ -66,6 +68,9 @@ protected:
     QList<QStringList> v_wifi_saved;
     QString wifi_connected() { return v_wifi_connected; }
     QString v_wifi_connected = "off/any";
+
+    QString v_error;
+    QString error() { return v_error; }
 
     Database *db = new Database("NetworkManager.sql");
 };
