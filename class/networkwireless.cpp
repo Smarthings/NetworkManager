@@ -93,6 +93,9 @@ void NetworkWireless::parseScanWireless(int status)
             if (match_SSID.hasMatch()) {
                 QStringList split = match_SSID.captured().replace("\"", "").split(":");
                 object.insert(split.at(0), split.at(1));
+                QString savedPass = this->findSavedWireless(split.at(1));
+                if (savedPass.length() > 0)
+                    object.insert("saved", savedPass);
                 if (split.at(1) == v_wifi_connected)
                     object.insert("connect", true);
             }
@@ -134,7 +137,7 @@ void NetworkWireless::setWifi(QJsonObject wifi)
     QStringList data;
     data << wifi.value("ESSID").toString() << wifi.value("password").toString();
 
-    QString command = QString("wpa_passphrase %1 %2").arg(data.at(0)).arg(data.at(1));
+    QString command = QString("wpa_passphrase %1 \"%2\"").arg(data.at(0)).arg(data.at(1));
     QProcess wifiWrite;
     wifiWrite.start(command);
 
@@ -163,6 +166,7 @@ void NetworkWireless::setWifi(QJsonObject wifi)
             contentWpaSupplicant.append(line);
         }
         wifiWrite.close();
+
         QFile wpa_supplicant("/tmp/wpa_supplicant.conf");
         if (!wpa_supplicant.open(QIODevice::WriteOnly))
             qDebug() << "Error" << wpa_supplicant.errorString();
@@ -175,16 +179,26 @@ void NetworkWireless::setWifi(QJsonObject wifi)
 
             if (!wifiWrite.waitForFinished())
                 qDebug() << command << "Error" << wifiWrite.errorString();
-            qDebug() << command << wifiWrite.readAll();
             wifiWrite.close();
         }
+
+        this->getSqlSavedWireless();
         this->getCurrentConnection();
     }
 }
 
 void NetworkWireless::getSqlSavedWireless()
 {
-    db->selectWirelress();
+    v_wifi_saved = db->selectWirelress();
+}
+
+QString NetworkWireless::findSavedWireless(QString name)
+{
+    for (auto &list : v_wifi_saved) {
+        if (list.at(1) == name)
+            return list.at(2);
+    }
+    return "";
 }
 
 NetworkWireless::~NetworkWireless()

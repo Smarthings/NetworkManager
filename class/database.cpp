@@ -48,19 +48,26 @@ bool Database::deleteWireless(quint32 id)
     return true;
 }
 
-void Database::selectWirelress()
+QList<QStringList> Database::selectWirelress()
 {
-    qDebug() << "Select";
+    QList<QStringList> list_result;
     QSqlQuery query;
     query.prepare("SELECT * FROM wireless;");
 
     if (!query.exec()) {
         qDebug() << "Query error: " << query.lastError();
-        return;
+        return list_result;
     }
+
     while (query.next()) {
-        qDebug() << query.value("id") << query.value("ssid") << query.value("pass_crypt");
+        QStringList row;
+        row.append(query.value("id").toString());
+        row.append(query.value("ssid").toString());
+        row.append(query.value("pass_crypt").toString());
+
+        list_result << row;
     }
+    return list_result;
 }
 
 Database::~Database()

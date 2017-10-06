@@ -6,6 +6,8 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QVariantList>
+#include <QStringList>
 
 class Database
 {
@@ -14,7 +16,7 @@ public:
     ~Database();
     bool insertWireless(QString ssid, QString pass_crypt);
     bool deleteWireless(quint32 id);
-    void selectWirelress();
+    QList<QStringList> selectWirelress();
 
 protected:
     void createTableMain();

@@ -11,6 +11,8 @@
 #include <QDebug>
 #include <QTimer>
 #include <QFile>
+#include <QStringList>
+#include <QList>
 
 #include "./database.h"
 
@@ -44,6 +46,7 @@ protected slots:
     void scanWireless();
     void parseScanWireless(int status);
     void getSqlSavedWireless();
+    QString findSavedWireless(QString name);
 
 protected:
     QStringList ifaces;
@@ -60,6 +63,7 @@ protected:
 
     QTimer *timer;
 
+    QList<QStringList> v_wifi_saved;
     QString wifi_connected() { return v_wifi_connected; }
     QString v_wifi_connected = "off/any";
 

@@ -10,13 +10,13 @@ Dialog {
     property var dataWifi: []
     property bool visiblePass: false
 
-    title: qsTr("Conectar a uma rede WIFI")
+    title: qsTr("Conectar à rede WIFI")
     modal: true
 
     x: Math.round((window.width - width) /2)
     width: 350
 
-    standardButtons: Dialog.Cancel | Dialog.Save
+    //standardButtons: Dialog.Cancel | Dialog.Save
     contentItem: Item {
         width: parent.width
         height: parent.height
@@ -26,12 +26,15 @@ Dialog {
 
             Text {
                 text: (dataWifi['ESSID'])? dataWifi['ESSID'] : ""
+                font.pixelSize: 16
                 font.bold: true
                 color: Material.foreground
             }
 
             RowLayout {
                 Layout.fillWidth: true
+                enabled: !dataWifi['saved']
+                visible: !dataWifi['saved']
 
                 TextField {
                     id: password
@@ -53,10 +56,27 @@ Dialog {
         }
     }
 
-    onAccepted: {
-        dataWifi['password'] = password.text;
-        wireless.setWifi(dataWifi);
-        dialogConnect.close();
+    footer: RowLayout {
+        width: parent.width
+        height: 60
+
+        Button {
+            height: 50
+            text: qsTr("Conectar");
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            Material.background: Material.Green
+
+            onClicked: {
+                if (dataWifi['saved']) {
+                    console.log("Connect: ", dataWifi);
+                } else {
+                    dataWifi['password'] = password.text;
+                    wireless.setWifi(dataWifi);
+                }
+                dialogConnect.close();
+            }
+        }
     }
 
     onDataWifiChanged: {

@@ -9,11 +9,36 @@ Dialog {
 
     property string name
 
-    title: qsTr("Desconectar de %1?").arg(name);
+    title: name;
     modal: true
 
     x: Math.round((window.width - width) /2)
     width: 300
+    height: implicitHeight
 
-    standardButtons: Dialog.No | Dialog.Yes
+    contentItem: Page {
+        id: contentPage
+        width: parent.width
+
+        Column {
+            anchors.fill: parent
+            spacing: 20
+
+            Button {
+                width: parent.width
+                height: 50
+                text: qsTr("Desconectar");
+
+                Material.background: Material.accent
+            }
+
+            Button {
+                width: parent.width
+                height: 50
+                text: qsTr("Esquecer esta rede");
+
+                Material.background: Material.Red
+            }
+        }
+    }
 }
