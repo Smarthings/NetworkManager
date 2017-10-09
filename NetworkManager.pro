@@ -14,7 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     class/networkwireless.cpp \
-    class/database.cpp
+    class/database.cpp \
+    class/networkmanager.cpp \
+    class/networkwired.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,4 +35,6 @@ else: unix:!android: target.path = /usr/local/bin
 
 HEADERS += \
     class/networkwireless.h \
-    class/database.h
+    class/database.h \
+    class/networkmanager.h \
+    class/networkwired.h

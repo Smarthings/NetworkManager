@@ -5,7 +5,9 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.0
 import Qt.labs.settings 1.0
 
+import NetworkManager 1.0
 import NetworkWireless 1.0
+import NetworkWired 1.0
 
 ApplicationWindow {
     id: window
@@ -21,7 +23,7 @@ ApplicationWindow {
 
     QtObject {
         id: object
-
+        property bool busy: false
         property color line: settings.theme == 0? "#ddd" : "#2f2f2f"
     }
 
@@ -100,6 +102,33 @@ ApplicationWindow {
         }
     }
 
+    Rectangle {
+        visible: object.busy
+        anchors.fill: parent
+        color: Qt.rgba(0, 0, 0, 0.8)
+        anchors.top: parent.top
+        anchors.topMargin: -header.height
+
+        BusyIndicator {
+            id: busy_indicator
+            anchors.centerIn: parent
+        }
+        Text {
+            width: parent.width
+            anchors.top: busy_indicator.bottom
+            horizontalAlignment: Text.AlignHCenter
+
+            color: "#fff"
+            text: qsTr("aguarde...");
+        }
+
+        MouseArea {
+            anchors.fill: parent
+        }
+
+        z: 4
+    }
+
     Shortcut {
         sequence: "Alt+F4"
         onActivated: {
@@ -120,6 +149,10 @@ ApplicationWindow {
         z: 3
     }
 
+    NetworkManager {
+        id: manager
+    }
+
     NetworkWireless {
         id: wireless
 
@@ -127,6 +160,14 @@ ApplicationWindow {
             message.text = qsTr(error);
             message.visible = true;
         }
+
+        onBusyChanged: {
+            object.busy = busyFront;
+        }
+    }
+
+    NetworkWired {
+        id: wired
     }
 
     DialogTheme {

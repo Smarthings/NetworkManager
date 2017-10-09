@@ -19,6 +19,7 @@
 class NetworkWireless : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool busyFront READ busyFront NOTIFY busyChanged)
     Q_PROPERTY(QList<QVariant> listWifi READ listWifi NOTIFY listWifiChanged)
     Q_PROPERTY(bool search READ search NOTIFY searchChanged)
     Q_PROPERTY(QJsonObject connectWifi READ connectWifi WRITE setWifi NOTIFY connectWifiChanged)
@@ -35,23 +36,30 @@ Q_SIGNALS:
     void searchChanged();
     void wifi_connectedChanged();
     void errorChanged();
+    void forgetChanged();
+    void busyChanged();
 
 private:
     void getInterface();
 
 public slots:
     void setWifi(QJsonObject wifi);
+    void forgetNetwork(QJsonObject wifi);
+    void disconnectWifi();
 
 protected slots:
+    void busyIndicator(bool status);
     void startWlan();
     void getCurrentConnection();
     void scanWireless();
     void parseScanWireless(int status);
     void getSqlSavedWireless();
     QStringList findSavedWireless(QString name);
+    bool write_wpa_supplicant(QString content_wpa);
+    bool restartWireless();
 
 protected:
-    QStringList ifaces;
+    QList<QStringList> ifaces;
     QProcess process;
 
     QList<QVariant> list_wifi;
@@ -73,6 +81,8 @@ protected:
     QString error() { return v_error; }
 
     Database *db = new Database("/etc/smarthings/networkmanager.sql");
+    bool v_busy = false;
+    bool busyFront() { return v_busy; }
 };
 
 #endif // NETWORKWIRELESS_H

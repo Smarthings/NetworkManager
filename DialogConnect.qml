@@ -10,26 +10,18 @@ Dialog {
     property var dataWifi: []
     property bool visiblePass: false
 
-    title: qsTr("Conectar à rede WIFI")
+    title: (dataWifi['ESSID'])? dataWifi['ESSID'] : ""
     modal: true
 
     x: Math.round((window.width - width) /2)
     width: 350
 
-    //standardButtons: Dialog.Cancel | Dialog.Save
     contentItem: Item {
         width: parent.width
         height: parent.height
 
         ColumnLayout {
             anchors.fill: parent
-
-            Text {
-                text: (dataWifi['ESSID'])? dataWifi['ESSID'] : ""
-                font.pixelSize: 16
-                font.bold: true
-                color: Material.foreground
-            }
 
             RowLayout {
                 Layout.fillWidth: true
@@ -61,6 +53,9 @@ Dialog {
         width: parent.width
 
         Button {
+            enabled: wireless.wifi_connected !== dataWifi['ESSID']
+            visible: wireless.wifi_connected !== dataWifi['ESSID']
+
             Layout.fillWidth: true
             height: 50
             text: qsTr("Conectar");
@@ -89,12 +84,17 @@ Dialog {
             Layout.fillWidth: true
             height: 50
             text: qsTr("Desconectar");
-            Material.background: Material.accent
+            Material.background: Material.BlueGrey
 
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
+
+            onClicked: {
+                wireless.disconnectWifi();
+                dialogConnect.close();
+            }
         }
 
         Button {
@@ -110,6 +110,12 @@ Dialog {
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
+
+            onClicked: {
+                wireless.forgetNetwork(dataWifi);
+                wireless.disconnectWifi();
+                dialogConnect.close();
+            }
         }
     }
 
