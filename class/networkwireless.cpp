@@ -177,7 +177,7 @@ void NetworkWireless::setWifi(QJsonObject wifi)
         }
         wifiWrite.close();
 
-        QFile wpa_supplicant("/tmp/wpa_supplicant.conf");
+        QFile wpa_supplicant("/etc/wpa_supplicant.conf");
         if (!wpa_supplicant.open(QIODevice::WriteOnly))
             qDebug() << "Error" << wpa_supplicant.errorString();
         if (!wpa_supplicant.write(contentWpaSupplicant.toUtf8(), contentWpaSupplicant.length()))

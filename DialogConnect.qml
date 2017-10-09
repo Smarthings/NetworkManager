@@ -56,16 +56,20 @@ Dialog {
         }
     }
 
-    footer: RowLayout {
+    footer: ColumnLayout {
+        id: footer_column
         width: parent.width
-        height: 60
 
         Button {
+            Layout.fillWidth: true
             height: 50
             text: qsTr("Conectar");
+            Material.background: Material.Green
+
+            anchors.left: parent.left
+            anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            Material.background: Material.Green
 
             onClicked: {
                 if (dataWifi['saved']) {
@@ -76,6 +80,36 @@ Dialog {
                 }
                 dialogConnect.close();
             }
+        }
+
+        Button {
+            enabled: wireless.wifi_connected === dataWifi['ESSID']
+            visible: wireless.wifi_connected === dataWifi['ESSID']
+
+            Layout.fillWidth: true
+            height: 50
+            text: qsTr("Desconectar");
+            Material.background: Material.accent
+
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+        }
+
+        Button {
+            enabled: !dataWifi['saved']? false : true
+            visible: !dataWifi['saved']? false : true
+
+            Layout.fillWidth: true
+            height: 50
+            text: qsTr("Esquecer esta rede");
+            Material.background: Material.Red
+
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 10
         }
     }
 

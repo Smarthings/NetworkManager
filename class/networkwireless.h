@@ -72,7 +72,7 @@ protected:
     QString v_error;
     QString error() { return v_error; }
 
-    Database *db = new Database("NetworkManager.sql");
+    Database *db = new Database("/etc/smarthings/networkmanager.sql");
 };
 
 #endif // NETWORKWIRELESS_H

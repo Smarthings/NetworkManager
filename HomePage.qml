@@ -151,9 +151,5 @@ ScrollablePage {
         DialogConnect {
             id: dialogConnect
         }
-
-        DialogDisconnect {
-            id: dialogDisconnect
-        }
     }
 }

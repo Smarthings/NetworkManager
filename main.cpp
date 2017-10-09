@@ -3,6 +3,7 @@
 #include <QQuickView>
 #include <QQuickStyle>
 #include <QtQuick>
+#include <QDebug>
 
 #include "./class/networkwireless.h"
 

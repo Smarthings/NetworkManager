@@ -7,6 +7,5 @@
         <file>fonts/MaterialIcons.ttf</file>
         <file>DialogTheme.qml</file>
         <file>DialogConnect.qml</file>
-        <file>DialogDisconnect.qml</file>
     </qresource>
 </RCC>
