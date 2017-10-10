@@ -25,6 +25,7 @@ ApplicationWindow {
         id: object
         property bool busy: false
         property color line: settings.theme == 0? "#ddd" : "#2f2f2f"
+        property color background: settings.theme == 0? "#f4f4f4" : "#141414"
     }
 
     Settings {
@@ -65,13 +66,13 @@ ApplicationWindow {
 
                     Text {
                         width: 30
-                        text: wireless.wifi_connected === "off/any"? "\uE8A9" : "\uE1BA"
+                        //text: wireless.wifi_connected === "off/any"? "\uE8A9" : "\uE1BA"
                         font.family: material_icon.name
                         color: "#999"
                     }
 
                     Text {
-                        text: wireless.wifi_connected === "off/any"? qsTr("Sem conexão") : qsTr("Conectado à %1").arg(wireless.wifi_connected)
+                        //text: wireless.wifi_connected === "off/any"? qsTr("Sem conexão") : qsTr("Conectado à %1").arg(wireless.wifi_connected)
                         Layout.fillWidth: true
                         color: "#999"
                     }
@@ -153,7 +154,7 @@ ApplicationWindow {
         id: manager
     }
 
-    NetworkWireless {
+    /*NetworkWireless {
         id: wireless
 
         onErrorChanged: {
@@ -164,7 +165,7 @@ ApplicationWindow {
         onBusyChanged: {
             object.busy = busyFront;
         }
-    }
+    }*/
 
     NetworkWired {
         id: wired

@@ -3,7 +3,7 @@
 NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
     timer(new QTimer)
 {
-    this->getInterface();
+    /*this->getInterface();
     this->startWlan();
     this->getCurrentConnection();
     this->getSqlSavedWireless();
@@ -11,7 +11,7 @@ NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
 
     connect(&process, SIGNAL(finished(int)), this, SLOT(parseScanWireless(int)));
     connect(timer, &QTimer::timeout, this, &NetworkWireless::scanWireless, Qt::UniqueConnection);
-    timer->start(2500);
+    timer->start(2500);*/
 }
 
 void NetworkWireless::getInterface()
