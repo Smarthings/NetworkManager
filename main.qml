@@ -24,8 +24,8 @@ ApplicationWindow {
     QtObject {
         id: object
         property bool busy: false
-        property color line: settings.theme == 0? "#ddd" : "#2f2f2f"
-        property color background: settings.theme == 0? "#f4f4f4" : "#141414"
+        property color line: settings.theme == 0? "#eee" : "#111"
+        property color background: settings.theme == 0? "#fff" : "#191919"
     }
 
     Settings {
@@ -42,64 +42,46 @@ ApplicationWindow {
         source: "qrc:/fonts/MaterialIcons.ttf"
     }
 
-    header: Rectangle {
-        id: headerPage
-        width: window.width
-        height: 50
-        color: "transparent"
+    header: ToolBar {
+        Material.background: Material.accent
 
         RowLayout {
             anchors.fill: parent
             spacing: 5
+            anchors.leftMargin: 5
 
-            Rectangle {
+            ToolButton {
+                id: buttonBack
+                visible: stackview.depth > 1
+                text: "\uE314"
+                font.family: material_icon.name
+                font.pixelSize: 28
+
+                onClicked: stackview.pop();
+            }
+
+            Label {
+                width: 30
+                text: "\uE640"
+                font.family: material_icon.name
+                font.pixelSize: 28
+            }
+
+            Label {
+                text: qsTr("Gerenciador de rede")
                 Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: "transparent"
-
-                RowLayout {
-                    id: item_text
-                    anchors.fill: parent
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    spacing: 5
-
-                    Text {
-                        width: 30
-                        //text: wireless.wifi_connected === "off/any"? "\uE8A9" : "\uE1BA"
-                        font.family: material_icon.name
-                        color: "#999"
-                    }
-
-                    Text {
-                        //text: wireless.wifi_connected === "off/any"? qsTr("Sem conexão") : qsTr("Conectado à %1").arg(wireless.wifi_connected)
-                        Layout.fillWidth: true
-                        color: "#999"
-                    }
-                }
+                font.pixelSize: 20
             }
 
-            Rectangle {
-                Layout.fillHeight: true
-                width: 50
-                color: "transparent"
+            ToolButton {
+                id: buttonStyle
+                text: "\uE243"
+                font.family: material_icon.name
 
-                ToolButton {
-                    id: buttonStyle
-                    text: "\uE243"
-                    font.family: material_icon.name
-                    onClicked: {
-                        dialogTheme.dialog.open()
-                    }
+                onClicked: {
+                    dialogTheme.dialog.open()
                 }
             }
-        }
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: object.line
-            anchors.bottom: parent.bottom
         }
     }
 
@@ -109,6 +91,7 @@ ApplicationWindow {
         color: Qt.rgba(0, 0, 0, 0.8)
         anchors.top: parent.top
         anchors.topMargin: -header.height
+        z: 4
 
         BusyIndicator {
             id: busy_indicator
@@ -126,8 +109,6 @@ ApplicationWindow {
         MouseArea {
             anchors.fill: parent
         }
-
-        z: 4
     }
 
     Shortcut {
@@ -154,7 +135,7 @@ ApplicationWindow {
         id: manager
     }
 
-    /*NetworkWireless {
+    NetworkWireless {
         id: wireless
 
         onErrorChanged: {
@@ -165,7 +146,7 @@ ApplicationWindow {
         onBusyChanged: {
             object.busy = busyFront;
         }
-    }*/
+    }
 
     NetworkWired {
         id: wired

@@ -60,6 +60,22 @@ ScrollablePage {
                             Layout.fillWidth: true
 
                             Text {
+                                text: qsTr("Tipo: ")
+                                font.bold: true
+                                color: Material.foreground
+                            }
+                            Text {
+                                text: qsTr(modelData.type)
+                                font.capitalization: Font.Capitalize
+                                Layout.fillWidth: true
+                                color: Material.foreground
+                            }
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+
+                            Text {
                                 text: qsTr("Status: ")
                                 font.bold: true
                                 color: Material.foreground
@@ -129,6 +145,20 @@ ScrollablePage {
                                 text: (modelData.broadcast)? modelData.broadcast : ""
                                 Layout.fillWidth: true
                                 color: Material.foreground
+                            }
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            if (modelData.type === "wired") {
+
+                            }
+                            if (modelData.type === "wireless") {
+                                wireless.startService(modelData.name);
+                                stackview.push("qrc:/WirelessPage.qml", {'name': modelData.name});
                             }
                         }
                     }

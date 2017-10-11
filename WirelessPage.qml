@@ -6,6 +6,7 @@ import QtQuick.Controls.Material 2.0
 
 ScrollablePage {
     id: root
+    property string name
 
     Item {
         width: parent.width
@@ -13,7 +14,7 @@ ScrollablePage {
 
         Rectangle {
             width: (window.width > 400)? 400 : parent.width
-            height: parent.height
+            height: root.height
             color: "transparent"
             anchors.horizontalCenter: parent.horizontalCenter
 

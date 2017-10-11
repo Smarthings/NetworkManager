@@ -40,9 +40,9 @@ Q_SIGNALS:
     void busyChanged();
 
 private:
-    void getInterface();
 
 public slots:
+    void startService(QString name);
     void setWifi(QJsonObject wifi);
     void forgetNetwork(QJsonObject wifi);
     void disconnectWifi();
@@ -59,6 +59,7 @@ protected slots:
     bool restartWireless();
 
 protected:
+    QString interface;
     QList<QStringList> ifaces;
     QProcess process;
 

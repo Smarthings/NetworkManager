@@ -3,7 +3,11 @@
 NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
     timer(new QTimer)
 {
-    /*this->getInterface();
+}
+
+void NetworkWireless::startService(QString name)
+{
+    this->interface = name;
     this->startWlan();
     this->getCurrentConnection();
     this->getSqlSavedWireless();
@@ -11,41 +15,12 @@ NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
 
     connect(&process, SIGNAL(finished(int)), this, SLOT(parseScanWireless(int)));
     connect(timer, &QTimer::timeout, this, &NetworkWireless::scanWireless, Qt::UniqueConnection);
-    timer->start(2500);*/
-}
-
-void NetworkWireless::getInterface()
-{
-    QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
-    for (auto &interface : interfaces) {
-        if (QString(interface.name()).indexOf("w") >= 0) {
-            QNetworkInterface obj = QNetworkInterface::interfaceFromName(interface.name());
-            for (QHostAddress address : obj.allAddresses()) {
-                if (address.protocol() == QAbstractSocket::IPv4Protocol && !address.isLoopback()) {
-                    QStringList _t;
-                    _t.append(interface.name());
-                    _t.append(address.toString());
-                    ifaces.append(_t);
-                }
-            }
-        }
-    }
-
-    /*QList<QNetworkInterface> allInterfaces = QNetworkInterface::allInterfaces();
-    QNetworkInterface eth;
-
-    foreach(eth, allInterfaces) {
-        QList<QNetworkAddressEntry> allEntries = eth.addressEntries();
-        QNetworkAddressEntry entry;
-        foreach (entry, allEntries) {
-            //qDebug() << entry.ip().toString() << "/" << entry.netmask().toString();
-        }
-    }*/
+    timer->start(2500);
 }
 
 void NetworkWireless::startWlan()
 {
-    QString command = QString("/bin/sh -c \"ifdown %1; ifup %2\" ").arg(ifaces.at(0).at(0)).arg(ifaces.at(0).at(0));
+    QString command = QString("/bin/sh -c \"ifdown %1; ifup %2\" ").arg(interface).arg(interface);
     QProcess _startWlan;
     _startWlan.start(command);
 
@@ -58,7 +33,7 @@ void NetworkWireless::startWlan()
 
 void NetworkWireless::getCurrentConnection()
 {
-    QString command = QString("iwconfig %1").arg(ifaces.at(0).at(0));
+    QString command = QString("iwconfig %1").arg(interface);
     QProcess _getCurrentConnection;
     _getCurrentConnection.start(command);
 
@@ -82,7 +57,7 @@ void NetworkWireless::scanWireless()
     busy = true;
     Q_EMIT searchChanged();
 
-    QString command = QString("iwlist %1 scan").arg(ifaces.at(0).at(0));
+    QString command = QString("iwlist %1 scan").arg(interface);
     process.start(command);
 }
 
@@ -226,7 +201,7 @@ bool NetworkWireless::write_wpa_supplicant(QString content_wpa)
 
 bool NetworkWireless::restartWireless()
 {
-    QString command = QString("/bin/sh -c \"ifdown %1; ifup %2\" ").arg(ifaces.at(0).at(0)).arg(ifaces.at(0).at(0));
+    QString command = QString("/bin/sh -c \"ifdown %1; ifup %2\" ").arg(interface).arg(interface);
     QProcess _restartWireless;
     _restartWireless.start(command);
 
