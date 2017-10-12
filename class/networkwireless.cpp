@@ -182,7 +182,7 @@ void NetworkWireless::setWifi(QJsonObject wifi)
 
 bool NetworkWireless::write_wpa_supplicant(QString content_wpa)
 {
-    QFile wpa_supplicant("/tmp/wpa_supplicant.conf");
+    QFile wpa_supplicant("/etc/wpa_supplicant.conf");
     if (!wpa_supplicant.open(QIODevice::WriteOnly)) {
         qDebug() << "Error" << wpa_supplicant.errorString();
         return false;

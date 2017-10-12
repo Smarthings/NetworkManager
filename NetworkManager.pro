@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     class/networkwireless.cpp \
     class/database.cpp \
     class/networkmanager.cpp \
-    class/networkwired.cpp
+    class/networkwired.cpp \
+    class/brightnessmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -37,4 +38,5 @@ HEADERS += \
     class/networkwireless.h \
     class/database.h \
     class/networkmanager.h \
-    class/networkwired.h
+    class/networkwired.h \
+    class/brightnessmanager.h

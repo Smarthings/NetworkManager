@@ -15,13 +15,13 @@
 class NetworkManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QList<QVariant> getInfo READ getInfo NOTIFY interfacesChanged)
+    Q_PROPERTY(QList<QVariant> getInfo READ getInfo NOTIFY getInfoChanged)
 
 public:
     explicit NetworkManager(QObject *parent = nullptr);
 
 Q_SIGNALS:
-    void interfacesChanged();
+    void getInfoChanged();
 
 private slots:
 

@@ -2,7 +2,6 @@
 
 NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
 {
-    qDebug() << "Network Manager";
     this->getInterfaces();
 }
 
@@ -34,7 +33,7 @@ void NetworkManager::getInterfaces()
         }
         interfaces.append(obj.toVariantMap());
     }
-    Q_EMIT interfacesChanged();
+    Q_EMIT getInfoChanged();
 }
 
 QString NetworkManager::getCurrentConnection(QString interface)
@@ -53,4 +52,5 @@ QString NetworkManager::getCurrentConnection(QString interface)
             return QString(match_SSID.captured()).replace("\"", "").replace(" ", "").split(":").at(1);
         }
     }
+    return "";
 }

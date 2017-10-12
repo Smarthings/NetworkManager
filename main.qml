@@ -14,7 +14,7 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Network Manager")
+    title: qsTr("Configurações")
 
     Material.accent: Material.color(Material.DeepOrange)
     Material.theme: settings.theme
@@ -24,8 +24,12 @@ ApplicationWindow {
     QtObject {
         id: object
         property bool busy: false
-        property color line: settings.theme == 0? "#eee" : "#111"
+        property color line: settings.theme == 0? "#ddd" : "#111"
         property color background: settings.theme == 0? "#fff" : "#191919"
+        property color foreground: settings.theme == 0? "#333" : "#bbb"
+        property int width: (window.width > 400)? 400 : window.width
+        property int titleSize: 22
+        property int iconTitleSize: 32
     }
 
     Settings {
@@ -42,8 +46,10 @@ ApplicationWindow {
         source: "qrc:/fonts/MaterialIcons.ttf"
     }
 
-    header: ToolBar {
-        Material.background: Material.accent
+    header: Rectangle {
+        width: parent.width
+        height: 60
+        color: object.background
 
         RowLayout {
             anchors.fill: parent
@@ -52,36 +58,47 @@ ApplicationWindow {
 
             ToolButton {
                 id: buttonBack
-                visible: stackview.depth > 1
+                visible: homePage.stackview.depth > 1
                 text: "\uE314"
                 font.family: material_icon.name
                 font.pixelSize: 28
+                Material.foreground: Material.accent
 
-                onClicked: stackview.pop();
+                onClicked: homePage.stackview.pop();
             }
 
             Label {
                 width: 30
-                text: "\uE640"
+                text: "\uE8B8"
                 font.family: material_icon.name
                 font.pixelSize: 28
+                color: Material.accent
             }
 
             Label {
-                text: qsTr("Gerenciador de rede")
+                text: qsTr("Configurações")
                 Layout.fillWidth: true
                 font.pixelSize: 20
+                color: Material.accent
             }
 
             ToolButton {
                 id: buttonStyle
                 text: "\uE243"
                 font.family: material_icon.name
+                Material.foreground: Material.accent
 
                 onClicked: {
                     dialogTheme.dialog.open()
                 }
             }
+        }
+
+        Rectangle {
+            width: parent.width
+            height: 1
+            color: object.line
+            anchors.bottom: parent.bottom
         }
     }
 
@@ -118,11 +135,16 @@ ApplicationWindow {
         }
     }
 
-    StackView {
-        id: stackview
+    HomePage {
+        id: homePage
+        anchors.fill: parent
+    }
+
+    /*homePage.stackview {
+        id: homePage.stackview
         anchors.fill: parent
         initialItem: HomePage {}
-    }
+    }*/
 
     ToolTip {
         id: message

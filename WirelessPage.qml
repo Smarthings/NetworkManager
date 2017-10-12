@@ -1,7 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.0
 
 ScrollablePage {
@@ -13,17 +12,14 @@ ScrollablePage {
         height: root.height
 
         Rectangle {
-            width: (window.width > 400)? 400 : parent.width
+            width: parent.width
             height: root.height
-            color: "transparent"
-            anchors.horizontalCenter: parent.horizontalCenter
+            color: object.background
 
             ColumnLayout {
-                anchors.fill: parent
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                anchors.right: parent.right
-                anchors.rightMargin: 10
+                width: object.width
+                height: parent.height
+                anchors.centerIn: parent
 
                 Item {
                     width: parent.width
@@ -37,13 +33,13 @@ ScrollablePage {
                     Text {
                         text: "\uE1BA"
                         font.family: material_icon.name
-                        font.pixelSize: 50
+                        font.pixelSize: object.iconTitleSize
                         color: Material.accent
                     }
 
                     Text {
                         text: qsTr("Conecte-se a uma rede WIFI")
-                        font.pixelSize: 20
+                        font.pixelSize: object.titleSize
                         Layout.fillWidth: true
                         color: Material.accent
                     }
@@ -148,6 +144,7 @@ ScrollablePage {
                     }
                 }
             }
+            Component.onCompleted: wireless.startService(name);
         }
         DialogConnect {
             id: dialogConnect
