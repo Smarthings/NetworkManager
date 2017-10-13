@@ -9,6 +9,7 @@
 #include "./class/networkwireless.h"
 #include "./class/networkwired.h"
 #include "./class/brightnessmanager.h"
+#include "./class/systemmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<NetworkWireless>("NetworkWireless", 1, 0, "NetworkWireless");
     qmlRegisterType<NetworkWired>("NetworkWired", 1, 0, "NetworkWired");
     qmlRegisterType<BrightnessManager>("BrightnessManager", 1, 0, "BrightnessManager");
+    qmlRegisterType<SystemManager>("SystemManager", 1, 0, "SystemManager");
 
     QQuickStyle::setStyle("Material");
 

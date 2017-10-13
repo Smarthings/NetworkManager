@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     class/database.cpp \
     class/networkmanager.cpp \
     class/networkwired.cpp \
-    class/brightnessmanager.cpp
+    class/brightnessmanager.cpp \
+    class/systemmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,4 +40,5 @@ HEADERS += \
     class/database.h \
     class/networkmanager.h \
     class/networkwired.h \
-    class/brightnessmanager.h
+    class/brightnessmanager.h \
+    class/systemmanager.h

@@ -7,10 +7,11 @@ Page {
     id: root
     property alias stackview: stackview
     property var menu: [
-        {"name": "WiFi", "icon": "\uE1BA", "page": "WirelessPage", "color": Material.Red},
+        {"name": "WiFi", "icon": "\uE63E", "page": "WirelessPage", "color": Material.Red},
         {"name": "Rede Cabeada", "icon": "\uE8BE", "page": "WiredPage", "color": Material.Green},
         {"name": "Bluetooth", "icon": "\uE1A7", "page": "BluetoothPage", "color": Material.Blue},
         {"name": "Brilho da tela", "icon": "\uE1AE", "page": "BrightnessPage", "color": Material.Amber},
+        {"name": "Sistema", "icon": "\uE333", "page": "SystemPage", "color": Material.Teal},
     ];
     property string pageCurrent
 

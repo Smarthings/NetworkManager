@@ -9,5 +9,6 @@
         <file>DialogConnect.qml</file>
         <file>HomePage.qml</file>
         <file>BrightnessPage.qml</file>
+        <file>SystemPage.qml</file>
     </qresource>
 </RCC>
