@@ -144,7 +144,6 @@ ScrollablePage {
                     }
                 }
             }
-            Component.onCompleted: wireless.startService(name);
         }
         DialogConnect {
             id: dialogConnect

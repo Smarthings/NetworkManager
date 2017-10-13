@@ -13,7 +13,7 @@ Dialog {
     title: (dataWifi['ESSID'])? dataWifi['ESSID'] : ""
     modal: true
 
-    x: Math.round((window.width - width) /2)
+    x: Math.round((width - (window.width - root.width)) /4)
     width: 350
 
     contentItem: Item {
@@ -68,7 +68,7 @@ Dialog {
 
             onClicked: {
                 if (dataWifi['saved']) {
-                    console.log("Connect: ", dataWifi['id']);
+                    wireless.connectWifi(dataWifi['ESSID'], dataWifi['saved']);
                 } else {
                     dataWifi['password'] = password.text;
                     wireless.setWifi(dataWifi);

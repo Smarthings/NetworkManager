@@ -12,8 +12,6 @@ import NetworkWired 1.0
 ApplicationWindow {
     id: window
     visible: true
-    width: 640
-    height: 480
     title: qsTr("Configurações")
 
     Material.accent: Material.color(Material.DeepOrange)
@@ -108,7 +106,7 @@ ApplicationWindow {
         color: Qt.rgba(0, 0, 0, 0.8)
         anchors.top: parent.top
         anchors.topMargin: -header.height
-        z: 4
+        z: 10
 
         BusyIndicator {
             id: busy_indicator
@@ -150,7 +148,7 @@ ApplicationWindow {
         id: message
         timeout: 3000
         topMargin: parent.height
-        z: 3
+        z: 10
     }
 
     NetworkManager {

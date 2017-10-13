@@ -22,7 +22,6 @@ class NetworkWireless : public QObject
     Q_PROPERTY(bool busyFront READ busyFront NOTIFY busyChanged)
     Q_PROPERTY(QList<QVariant> listWifi READ listWifi NOTIFY listWifiChanged)
     Q_PROPERTY(bool search READ search NOTIFY searchChanged)
-    Q_PROPERTY(QJsonObject connectWifi READ connectWifi WRITE setWifi NOTIFY connectWifiChanged)
     Q_PROPERTY(QString wifi_connected READ wifi_connected NOTIFY wifi_connectedChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
 
@@ -40,11 +39,12 @@ Q_SIGNALS:
     void busyChanged();
 
 private:
+    void getInterface();
 
 public slots:
-    void startService(QString name);
     void setWifi(QJsonObject wifi);
     void forgetNetwork(QJsonObject wifi);
+    void connectWifi(QString ssid, QString psk);
     void disconnectWifi();
 
 protected slots:
@@ -65,9 +65,6 @@ protected:
 
     QList<QVariant> list_wifi;
     QList<QVariant> listWifi() { return list_wifi; }
-
-    QJsonObject connect_wifi;
-    QJsonObject connectWifi() { return connect_wifi; }
 
     bool busy = false;
     bool search() { return busy; }

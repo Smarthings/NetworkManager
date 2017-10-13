@@ -3,11 +3,7 @@
 NetworkWireless::NetworkWireless(QObject *parent) : QObject(parent),
     timer(new QTimer)
 {
-}
-
-void NetworkWireless::startService(QString name)
-{
-    this->interface = name;
+    this->getInterface();
     this->startWlan();
     this->getCurrentConnection();
     this->getSqlSavedWireless();
@@ -16,6 +12,17 @@ void NetworkWireless::startService(QString name)
     connect(&process, SIGNAL(finished(int)), this, SLOT(parseScanWireless(int)));
     connect(timer, &QTimer::timeout, this, &NetworkWireless::scanWireless, Qt::UniqueConnection);
     timer->start(2500);
+}
+
+void NetworkWireless::getInterface()
+{
+    QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+    for (auto &interface : interfaces) {
+        if (QString(interface.name()).indexOf("w") >= 0) {
+            this->interface = interface.name();
+            return;
+        }
+    }
 }
 
 void NetworkWireless::startWlan()
@@ -209,6 +216,7 @@ bool NetworkWireless::restartWireless()
         qDebug() << "Error" << _restartWireless.errorString();
         return false;
     }
+    qDebug() << "Ok" << command;
     return true;
 }
 
@@ -218,12 +226,24 @@ void NetworkWireless::forgetNetwork(QJsonObject wifi)
     this->getSqlSavedWireless();
 }
 
+void NetworkWireless::connectWifi(QString ssid, QString psk)
+{
+    this->busyIndicator(true);
+    QString content_wpa =
+            QString("network={\n\
+        ssid=\"%1\"\n\
+        psk=%2\n}\n").arg(ssid).arg(psk);
+    if (this->write_wpa_supplicant(content_wpa))
+        this->restartWireless();
+    this->busyIndicator(false);
+}
+
 void NetworkWireless::disconnectWifi()
 {
     this->busyIndicator(true);
     QString content_wpa = "network={\n\
             ssid=''\n\
-            psk=''\n}";
+            psk=''\n}\n";
     if (this->write_wpa_supplicant(content_wpa))
         this->restartWireless();
     this->busyIndicator(false);
