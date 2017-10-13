@@ -11,8 +11,8 @@ Page {
         {"name": "Rede Cabeada", "icon": "\uE8BE", "page": "WiredPage", "color": Material.Green},
         {"name": "Bluetooth", "icon": "\uE1A7", "page": "BluetoothPage", "color": Material.Blue},
         {"name": "Brilho da tela", "icon": "\uE1AE", "page": "BrightnessPage", "color": Material.Amber},
-
     ];
+    property string pageCurrent
 
     Item {
         width: parent.width
@@ -36,25 +36,25 @@ Page {
                     model: menu
                     delegate: ItemDelegate {
                         width: parent.width
-                        height: 60
+                        height: 50
 
                         RowLayout {
                             anchors.fill: parent
 
                             Rectangle {
-                                width: 40
-                                height: 40
+                                width: 28
+                                height: 28
                                 radius: width
                                 color: Material.color(modelData.color)
 
                                 anchors.left: parent.left
-                                anchors.leftMargin: 2
+                                anchors.leftMargin: 4
 
                                 Text {
                                     anchors.fill: parent
                                     text: modelData.icon
                                     font.family: material_icon.name
-                                    font.pixelSize: 28
+                                    font.pixelSize: 20
                                     color: "#fff"
 
                                     horizontalAlignment: Text.AlignHCenter
@@ -64,7 +64,7 @@ Page {
 
                             Text {
                                 Layout.fillWidth: true
-                                Layout.leftMargin: 2
+                                Layout.leftMargin: 4
                                 text: qsTr(modelData.name)
                                 color: object.foreground
                                 elide: Text.ElideRight
@@ -82,6 +82,7 @@ Page {
                         }
 
                         onClicked: {
+                            pageCurrent = modelData.page
                             stackview.push("qrc:/"+modelData.page+".qml");
                         }
                     }
@@ -108,10 +109,117 @@ Page {
                             model: manager.getInfo
                             delegate: Item {
                                 width: parent.width
-                                height: 100
+                                height: columnlayout_root.implicitHeight + 50
 
-                                Text {
-                                    text: modelData.name
+                                ColumnLayout {
+                                    id: columnlayout_root
+                                    anchors.fill: parent
+                                    anchors.margins: 10
+
+                                    Rectangle {
+                                        width: parent.width
+                                        height: 1
+                                        color: object.line
+                                    }
+
+                                    Label {
+                                        text: modelData.name
+                                        font.pixelSize: 18
+                                        font.bold: true
+                                        color: Material.accent
+                                    }
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+
+                                        Text {
+                                            text: qsTr("Tipo: ")
+                                            font.bold: true
+                                            color: Material.foreground
+                                        }
+                                        Text {
+                                            text: (modelData.type)? qsTr(modelData.type) : ""
+                                            font.capitalization: Font.Capitalize
+                                            Layout.fillWidth: true
+                                            color: Material.foreground
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+
+                                        Text {
+                                            text: qsTr("Status: ")
+                                            font.bold: true
+                                            color: Material.foreground
+                                        }
+                                        Text {
+                                            text: modelData.status? qsTr("Ativa") : qsTr("Inativa")
+                                            Layout.fillWidth: true
+                                            color: Material.foreground
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+                                        visible: modelData.ssid? true : false
+
+                                        Text {
+                                            text: qsTr("WiFi: ")
+                                            font.bold: true
+                                            color: Material.foreground
+                                        }
+                                        Text {
+                                            text: modelData.ssid? modelData.ssid : ""
+                                            Layout.fillWidth: true
+                                            color: Material.foreground
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+
+                                        Text {
+                                            text: qsTr("IP: ")
+                                            font.bold: true
+                                            color: Material.foreground
+                                        }
+                                        Text {
+                                            text: (modelData.ipaddress)? modelData.ipaddress: ""
+                                            Layout.fillWidth: true
+                                            color: Material.foreground
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+
+                                        Text {
+                                            text: qsTr("Mascara de rede: ")
+                                            font.bold: true
+                                            color: Material.foreground
+                                        }
+                                        Text {
+                                            text: (modelData.netmask)? modelData.netmask : ""
+                                            Layout.fillWidth: true
+                                            color: Material.foreground
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+
+                                        Text {
+                                            text: qsTr("Broadcast: ")
+                                            font.bold: true
+                                            color: Material.foreground
+                                        }
+                                        Text {
+                                            text: (modelData.broadcast)? modelData.broadcast : ""
+                                            Layout.fillWidth: true
+                                            color: Material.foreground
+                                        }
+                                    }
                                 }
                             }
                         }

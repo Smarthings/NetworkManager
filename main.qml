@@ -12,6 +12,8 @@ import NetworkWired 1.0
 ApplicationWindow {
     id: window
     visible: true
+    width: 800
+    height: 600
     title: qsTr("Configurações")
 
     Material.accent: Material.color(Material.DeepOrange)
@@ -22,7 +24,7 @@ ApplicationWindow {
     QtObject {
         id: object
         property bool busy: false
-        property color line: settings.theme == 0? "#ddd" : "#111"
+        property color line: settings.theme == 0? "#ddd" : "#000"
         property color background: settings.theme == 0? "#fff" : "#191919"
         property color foreground: settings.theme == 0? "#333" : "#bbb"
         property int width: (window.width > 400)? 400 : window.width
@@ -62,7 +64,9 @@ ApplicationWindow {
                 font.pixelSize: 28
                 Material.foreground: Material.accent
 
-                onClicked: homePage.stackview.pop();
+                onClicked: {
+                    homePage.stackview.pop();
+                }
             }
 
             Label {
