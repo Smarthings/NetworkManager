@@ -10,5 +10,6 @@
         <file>HomePage.qml</file>
         <file>BrightnessPage.qml</file>
         <file>SystemPage.qml</file>
+        <file>Components/SmartSlider.qml</file>
     </qresource>
 </RCC>

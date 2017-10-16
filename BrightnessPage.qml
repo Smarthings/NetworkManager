@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.0
 
 import BrightnessManager 1.0
+import "./Components"
 
 ScrollablePage {
     id: root
@@ -59,9 +60,21 @@ ScrollablePage {
 
                 Item {
                     width: parent.width
-                    height: 80
+                    height: 100
 
-                    Slider {
+                    SmartSlider {
+                        itemHeight: parent.height
+                        itemWidth: parent.width
+                        sliderWidth: parent.width -10
+
+                        _slider.to: 255
+                        _slider.from: 20
+                        _slider.value: brightness.brightness
+
+                        _slider.onValueChanged: brightness.setBrightness(Math.round(_slider.value));
+                    }
+
+                    /*Slider {
                         anchors.fill: parent
                         from: 20
                         to: 255
@@ -84,7 +97,7 @@ ScrollablePage {
                         }
 
                         onValueChanged: brightness.setBrightness(Math.round(value));
-                    }
+                    }*/
                 }
             }
         }
