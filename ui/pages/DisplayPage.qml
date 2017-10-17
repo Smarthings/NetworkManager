@@ -12,6 +12,14 @@ import "../components"
 ScrollablePage {
     id: root
 
+    property string _title: qsTr("Configurações da tela")
+    property string _icon: "\uE333"
+
+    Component.onCompleted: {
+        object.structHeader.push({"title": _title, "icon": _icon});
+        headerPage.changePage();
+    }
+
     Item {
         width: parent.width
         height: root.height
@@ -28,15 +36,11 @@ ScrollablePage {
 
                 Header {
                     width: parent.width
+                    height: 50
 
-                    _title: qsTr("Altere o brilho da tela")
-                    _icon: "\uE1AE"
+                    _title: qsTr("Brilho")
+                    _icon: "\uE8BD"
                     _font: material_icon.name
-                }
-
-                Item {
-                    width: parent.width
-                    height: 20
                 }
 
                 Item {

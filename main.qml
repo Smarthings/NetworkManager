@@ -33,6 +33,13 @@ ApplicationWindow {
         property int width: (window.width > 400)? 400 : window.width
         property int titleSize: 22
         property int iconTitleSize: 32
+
+        property var structHeader: [
+            {"title": "Configurações", "icon": "\uE8B8"}
+        ]
+        onStructHeaderChanged: {
+            headerPage.changePage();
+        }
     }
 
     Settings {
@@ -49,62 +56,8 @@ ApplicationWindow {
         source: "qrc:/fonts/MaterialIcons.ttf"
     }
 
-    header: Rectangle {
-        width: parent.width
-        height: 60
-        color: object.background
-
-        RowLayout {
-            anchors.fill: parent
-            spacing: 5
-            anchors.leftMargin: 5
-
-            ToolButton {
-                id: buttonBack
-                visible: homePage.stackview.depth > 1
-                text: "\uE314"
-                font.family: material_icon.name
-                font.pixelSize: 28
-                Material.foreground: Material.accent
-
-                onClicked: {
-                    homePage.stackview.pop();
-                }
-            }
-
-            Label {
-                width: 30
-                text: "\uE8B8"
-                font.family: material_icon.name
-                font.pixelSize: 28
-                color: Material.accent
-            }
-
-            Label {
-                text: qsTr("Configurações")
-                Layout.fillWidth: true
-                font.pixelSize: 20
-                color: Material.accent
-            }
-
-            ToolButton {
-                id: buttonStyle
-                text: "\uE243"
-                font.family: material_icon.name
-                Material.foreground: Material.accent
-
-                onClicked: {
-                    dialogTheme.dialog.open()
-                }
-            }
-        }
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: object.line
-            anchors.bottom: parent.bottom
-        }
+    header: HeaderPage {
+        id: headerPage
     }
 
     Rectangle {

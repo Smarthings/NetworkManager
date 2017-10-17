@@ -10,6 +10,14 @@ import "../components"
 ScrollablePage {
     id: root
 
+    property string _title: qsTr("Configurações de Rede Cabeada")
+    property string _icon: "\uE8BE"
+
+    Component.onCompleted: {
+        object.structHeader.push({"title": _title, "icon": _icon});
+        headerPage.changePage();
+    }
+
     Item {
         width: parent.width
         height: root.height
@@ -23,14 +31,6 @@ ScrollablePage {
                 width: object.width
                 height: parent.height
                 anchors.centerIn: parent
-
-                Header {
-                    width: parent.width
-
-                    _title: qsTr("Rede Cabeada")
-                    _icon: "\uE8BE"
-                    _font: material_icon.name
-                }
 
                 Item {
                     width: parent.width

@@ -7,13 +7,11 @@ Column {
     property int _margin: 20
     property string _title
     property string _icon
-    property color _color: Material.accent
+    property color _color: Material.foreground
     property var _font
     property int _pixelSize: 22
     property int _iconSize: 32
     property color _line: object.line
-
-    anchors.fill: parent
 
     Item {
         width: parent.width

@@ -10,6 +10,13 @@ import "../components"
 ScrollablePage {
     id: root
     property string name
+    property string _title: qsTr("Configurações de WiFi")
+    property string _icon: "\uE1BA"
+
+    Component.onCompleted: {
+        object.structHeader.push({"title": _title, "icon": _icon});
+        headerPage.changePage();
+    }
 
     Item {
         width: parent.width
@@ -24,14 +31,6 @@ ScrollablePage {
                 width: object.width
                 height: parent.height
                 anchors.centerIn: parent
-
-                Header {
-                    width: parent.width
-
-                    _title: qsTr("Conecte-se a uma rede WIFI")
-                    _icon: "\uE1BA"
-                    _font: material_icon.name
-                }
 
                 Item {
                     width: parent.width
