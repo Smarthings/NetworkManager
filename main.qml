@@ -9,6 +9,9 @@ import NetworkManager 1.0
 import NetworkWireless 1.0
 import NetworkWired 1.0
 
+import "./ui"
+import "./ui/dialogs"
+
 ApplicationWindow {
     id: window
     visible: true
@@ -18,14 +21,14 @@ ApplicationWindow {
 
     Material.accent: Material.color(Material.DeepOrange)
     Material.theme: settings.theme
-    Material.background: settings.theme == 0? "#f0f0f0" : "#111111"
-    Material.foreground: settings.theme == 0? "#111111" : "#f0f0f0"
+    Material.background: settings.theme == 0? "#f0f0f0" : "#060606"
+    Material.foreground: settings.theme == 0? "#000" : "#f0f0f0"
 
     QtObject {
         id: object
         property bool busy: false
-        property color line: settings.theme == 0? "#ddd" : "#000"
-        property color background: settings.theme == 0? "#fff" : "#191919"
+        property color line: settings.theme == 0? "#ddd" : "#090909"
+        property color background: settings.theme == 0? "#fff" : "#000"
         property color foreground: settings.theme == 0? "#333" : "#bbb"
         property int width: (window.width > 400)? 400 : window.width
         property int titleSize: 22

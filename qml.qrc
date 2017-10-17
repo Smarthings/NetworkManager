@@ -2,14 +2,17 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>ScrollablePage.qml</file>
-        <file>WirelessPage.qml</file>
+        <file>ui/components/SmartSlider.qml</file>
+        <file>ui/dialogs/DialogConnect.qml</file>
+        <file>ui/dialogs/DialogTheme.qml</file>
+        <file>ui/pages/BrightnessPage.qml</file>
+        <file>ui/pages/SystemPage.qml</file>
+        <file>ui/pages/WirelessPage.qml</file>
+        <file>ui/HomePage.qml</file>
+        <file>ui/ScrollablePage.qml</file>
         <file>fonts/MaterialIcons.ttf</file>
-        <file>DialogTheme.qml</file>
-        <file>DialogConnect.qml</file>
-        <file>HomePage.qml</file>
-        <file>BrightnessPage.qml</file>
-        <file>SystemPage.qml</file>
-        <file>Components/SmartSlider.qml</file>
+        <file>ui/components/Header.qml</file>
+        <file>ui/pages/BluetoothPage.qml</file>
+        <file>ui/pages/WiredPage.qml</file>
     </qresource>
 </RCC>

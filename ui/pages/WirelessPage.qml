@@ -3,6 +3,10 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.0
 
+import "../"
+import "../dialogs"
+import "../components"
+
 ScrollablePage {
     id: root
     property string name
@@ -21,34 +25,12 @@ ScrollablePage {
                 height: parent.height
                 anchors.centerIn: parent
 
-                Item {
+                Header {
                     width: parent.width
-                    height: 20
-                }
 
-                RowLayout {
-                    width: parent.width
-                    height: 50
-
-                    Text {
-                        text: "\uE1BA"
-                        font.family: material_icon.name
-                        font.pixelSize: object.iconTitleSize
-                        color: Material.accent
-                    }
-
-                    Text {
-                        text: qsTr("Conecte-se a uma rede WIFI")
-                        font.pixelSize: object.titleSize
-                        Layout.fillWidth: true
-                        color: Material.accent
-                    }
-                }
-
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: object.line
+                    _title: qsTr("Conecte-se a uma rede WIFI")
+                    _icon: "\uE1BA"
+                    _font: material_icon.name
                 }
 
                 Item {
